@@ -1,16 +1,16 @@
 import React from 'react';
+import Header from './components/Header';
+import Homepage from './pages/homepage/';
+import './default.css';
 
 function App (){
-
-  const sayHello = () =>{
-    console.log('hellobitch');
-  }
-
-  
   return (
-    <div>
-      <h1>Hello React</h1>
-      <button onClick={sayHello} >hello</button>
+    <div className='app'>
+            <Header/>
+      <div className='main'>
+    <Homepage/>
+      </div>
+
     </div>
   )
 }
