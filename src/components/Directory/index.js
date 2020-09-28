@@ -1,7 +1,7 @@
 import React from 'react';
 import Manshop from './../../assets/manshop.jpg';
 import Womanshop from './../../assets/womanshop.jpg';
-import './styles.css';
+import './directory.css';
 
 
 const Directory = props => {
