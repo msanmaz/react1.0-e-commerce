@@ -1,4 +1,4 @@
-.signin{
+.signup{
     display:block;
     width: 100%;
     max-width: 40.0rem;
@@ -6,10 +6,10 @@
     border: 1px solid black;
 }
 
-.wrapLog{
+.wrapSign{
     padding:10px;
 }
-.log{
+.sign{
     text-transform: uppercase;
     text-align: center;
     display: block;
@@ -21,6 +21,6 @@
     line-height: 1;
 }
 
-.socialSignin{
-    margin: 0.5rem auto 0;
+.formWrap{
+    margin: 3rem auto;
 }
