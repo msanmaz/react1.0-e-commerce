@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Switch, Route, Redirect } from 'react-router-dom';
-import { auth,handleUserProfile } from './firebase/utils';
+import { auth, handleUserProfile } from './firebase/utils';
 import Homepage from './pages/homepage/';
 import MainLayout from './layouts/MainLayout';
 import HomepageLayout from './layouts/HomepageLayout';
 import Registration from './pages/registration'
 import Login from './pages/login';
+import Recovery from './pages/recovery';
 import './default.css';
 
 
@@ -25,12 +26,12 @@ class App extends Component {
 
   componentDidMount() {
     this.authListener = auth.onAuthStateChanged(async userAuth => {
-      if (userAuth){
+      if (userAuth) {
         const userRef = await handleUserProfile(userAuth);
         userRef.onSnapshot(snapshot => {
           this.setState({
-            currentUser:{
-              id:snapshot.id,
+            currentUser: {
+              id: snapshot.id,
               ...snapshot.data()
             }
           })
@@ -57,7 +58,7 @@ class App extends Component {
             </HomepageLayout>
           )}
           />
-          <Route path="/registration" render={() => currentUser ? <Redirect to='/' /> :(
+          <Route path="/registration" render={() => currentUser ? <Redirect to='/' /> : (
             <MainLayout currentUser={currentUser}>
               <Registration />
             </MainLayout>
@@ -66,6 +67,12 @@ class App extends Component {
             render={() => currentUser ? <Redirect to='/' /> : (
               <MainLayout currentUser={currentUser}>
                 <Login />
+              </MainLayout>
+            )} />
+          <Route path="/recovery"
+            render={ () => (
+              <MainLayout>
+                <Recovery />
               </MainLayout>
             )} />
         </Switch>

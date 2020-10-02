@@ -1,7 +1,8 @@
 import React,{Component} from 'react';
 import './signin.css';
 import Buttons from './../../components/Forms/Buttons';
-import {signInWithGoogle, auth , signInWithEmailAndPassword} from './../../firebase/utils';
+import {signInWithGoogle, auth} from './../../firebase/utils';
+import AuthWrapper from './../AuthWrapper'
 
 import FormInput from './../Forms/Formsinput';
 
@@ -49,15 +50,12 @@ class SignIn extends Component{
 
     render(){
         const{email,password} = this.state;
-
+        const configAuthWrapper ={
+            headline:'Log In'
+        }
 
         return(
-            <div className='signin'>
-            <div className='wrapLog'>
-                <h2 className='log'>
-                    LogIn
-                </h2>
-
+                <AuthWrapper {...configAuthWrapper}>
                 <div className='formWrap'>
                     <form onSubmit={this.handleSubmit}>
 
@@ -76,9 +74,7 @@ class SignIn extends Component{
                         </div>
                     </form>
                 </div>
-            </div>
-
-        </div>
+              </AuthWrapper>
         )
     }
 }
