@@ -3,6 +3,7 @@ import './signin.css';
 import Buttons from './../../components/Forms/Buttons';
 import {signInWithGoogle, auth} from './../../firebase/utils';
 import AuthWrapper from './../AuthWrapper'
+import {Link} from 'react-router-dom';
 
 import FormInput from './../Forms/Formsinput';
 
@@ -72,6 +73,16 @@ class SignIn extends Component{
                                 </Buttons>
                             </div>
                         </div>
+
+
+                        <div className='links'>
+                            <Link to='/recovery'>
+                                Reset Password
+                            </Link>
+                        </div>
+
+
+
                     </form>
                 </div>
               </AuthWrapper>

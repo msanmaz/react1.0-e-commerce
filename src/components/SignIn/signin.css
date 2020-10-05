@@ -5,3 +5,13 @@
 .socialSignin{
     margin: 0.5rem auto 0;
 }
+
+.links{
+    display: block;
+    width: 100%;
+    color: black;
+    margin: 1.5rem 2rem 0;
+}
+.links a{
+    color: black;
+}
