@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import {connect} from 'react-redux'
 import { Button } from './../Button';
 import { auth } from './../../firebase/utils';
 
@@ -91,4 +92,8 @@ Header.defaultProps = {
     currentUser: null
 }
 
-export default Header;
+const mapStateToProps = ({user}) =>({
+    currentUser: user.currentUser
+})
+
+export default connect(mapStateToProps)(Header);
