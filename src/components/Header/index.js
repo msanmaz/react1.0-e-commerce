@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
 import { Button } from './../Button';
 import { auth } from './../../firebase/utils';
 
@@ -43,10 +43,16 @@ const Header = props => {
 
                 {currentUser && (
                     <ul className={click ? 'nav-menu active' : 'nav-menu'}>
+                        <li className='nav-item'>
+                            <Link to='/dashboard' className='nav-links' onClick={closeMobileMenu}>
+                                My Account
+                    </Link>
+                        </li>
                         <li className='nav-item nav-links'>
                             <span onClick={() => auth.signOut()}>LogOut</span>
 
                         </li>
+
                     </ul>
                 )}
 
@@ -74,7 +80,7 @@ const Header = props => {
                     </Link>
                         </li>
                         <li className='nav-item'>
-                        {button && <Button buttonStyle='btn--outline'>SIGN UP</Button>}
+                            {button && <Button buttonStyle='btn--outline'>SIGN UP</Button>}
                         </li>
                     </ul>
                 )}
@@ -92,8 +98,8 @@ Header.defaultProps = {
     currentUser: null
 }
 
-const mapStateToProps = ({user}) =>({
+const mapStateToProps = ({ user }) => ({
     currentUser: user.currentUser
 })
 
-export default connect(mapStateToProps)(Header);
+export default connect(mapStateToProps, null)(Header);
