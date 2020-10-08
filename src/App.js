@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { setCurrentUser } from './redux/User/user.actions';
 import { BrowserRouter as Switch, Route, Redirect } from 'react-router-dom';
 import { auth, handleUserProfile } from './firebase/utils';
-import { connect } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 
 //hoc
 import WithAuth from './hoc/withAuth'
@@ -22,8 +22,8 @@ import './default.css';
 
 const App = props => {
 
-  const { setCurrentUser, currentUser } = props;
 
+  const dispatch = useDispatch();
 
   useEffect(() => {
 
@@ -31,13 +31,13 @@ const App = props => {
       if (userAuth) {
         const userRef = await handleUserProfile(userAuth);
         userRef.onSnapshot(snapshot => {
-          setCurrentUser({
+          dispatch(setCurrentUser({
             id: snapshot.id,
             ...snapshot.data()
-          })
+          }))
         });
       }
-      setCurrentUser(userAuth)
+      dispatch(setCurrentUser(userAuth))
     });
 
     return () => {
@@ -89,14 +89,6 @@ const App = props => {
 }
 
 
-const mapStateToProps = ({ user }) => ({
-  currentUser: user.currentUser
-})
-
-const mapDispacthToProps = dispatch => ({
-  setCurrentUser: user => dispatch(setCurrentUser(user))
-
-})
 
 
-export default connect(mapStateToProps, mapDispacthToProps)(App);
+export default App;

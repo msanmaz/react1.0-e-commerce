@@ -1,74 +1,99 @@
-import React,{useState} from 'react';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import './signin.css';
 import Buttons from './../../components/Forms/Buttons';
-import {signInWithGoogle, auth} from './../../firebase/utils';
 import AuthWrapper from './../AuthWrapper'
-import {Link, withRouter} from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
+import { signInUser,signInWithGoogle,resetAllAuthForm } from './../../redux/User/user.actions'
 
 import FormInput from './../Forms/Formsinput';
 
 
+const mapState = ({ user }) => ({
+    signInSuccess: user.signInSuccess
+})
 
-const SignIn = props =>{
-    const[email, setEmail] = useState('');
-    const[password, setPassword] = useState('');
+
+const SignIn = props => {
+    const { signInSuccess } = useSelector(mapState);
+    const dispatch = useDispatch();
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [errors, setErrors] = useState([]);
+
+
+    useEffect(() => {
+        if (signInSuccess) {
+            resetForm();
+            dispatch(resetAllAuthForm());
+            props.history.push('/')
+        }
+    }, [signInSuccess])
+
+
     const resetForm = () => {
         setEmail('');
         setPassword('');
     }
 
 
-    const handleSubmit = async e =>{
+    const handleSubmit = async e => {
         e.preventDefault();
-
-        try{
-            await auth.signInWithEmailAndPassword(email,password)
-            resetForm();
-            props.history.push('/')
-        }catch(err){
-            console.log(err)
-        }
+        dispatch(signInUser({ email, password }))
+    }
+    const handleGoogleSign = () => {
+        dispatch(signInWithGoogle())
     }
 
 
+    const configAuthWrapper = {
+        headline: 'Log In'
+    }
 
-        const configAuthWrapper ={
-            headline:'Log In'
-        }
+    return (
+        <AuthWrapper {...configAuthWrapper}>
+            <div className='formWrap'>
+                {errors.length > 0 && (
+                    <ul>
+                        {errors.map((err, index) => {
+                            return (
+                                <li key={index}>
+                                    {err}
+                                </li>
+                            )
+                        })}
+                    </ul>
+                )}
+                <form onSubmit={handleSubmit}>
 
-        return(
-                <AuthWrapper {...configAuthWrapper}>
-                <div className='formWrap'>
-                    <form onSubmit={handleSubmit}>
-
-                    <FormInput type='text' name='email' value={email} placeholder='E-mail' handleChange={e=> setEmail(e.target.value)} />
-                    <FormInput type='text' name='password' value={password} placeholder='Password' handleChange={e=> setPassword(e.target.value)}/>
+                    <FormInput type='text' name='email' value={email} placeholder='E-mail' handleChange={e => setEmail(e.target.value)} />
+                    <FormInput type='text' name='password' value={password} placeholder='Password' handleChange={e => setPassword(e.target.value)} />
                     <Buttons type='submit'>Log In</Buttons>
 
 
 
-                        <div className='socialSignin'>
-                            <div className='row'>
-                                <Buttons onClick={signInWithGoogle}>
-                                    Sign in with Google
+                    <div className='socialSignin'>
+                        <div className='row'>
+                            <Buttons onClick={handleGoogleSign}>
+                                Sign in with Google
                                 </Buttons>
-                            </div>
                         </div>
+                    </div>
 
 
-                        <div className='links'>
-                            <Link to='/recovery'>
-                                Reset Password
+                    <div className='links'>
+                        <Link to='/recovery'>
+                            Reset Password
                             </Link>
-                        </div>
+                    </div>
 
 
 
-                    </form>
-                </div>
-              </AuthWrapper>
-        )
-    }
+                </form>
+            </div>
+        </AuthWrapper>
+    )
+}
 
 
 

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import {useSelector} from 'react-redux'
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux'
 import { Button } from './../Button';
@@ -7,6 +8,9 @@ import { auth } from './../../firebase/utils';
 import './navbar.css';
 
 import Logo from './../../assets/logo.png';
+const mapState = ({ user }) => ({
+    currentUser: user.currentUser
+})
 
 
 const Header = props => {
@@ -30,7 +34,7 @@ const Header = props => {
 
     window.addEventListener('resize', showButton);
 
-    const { currentUser } = props;
+    const { currentUser } = useSelector(mapState);
     return (
         <nav className='navbar'>
             <div className='navbar-container'>
@@ -98,8 +102,5 @@ Header.defaultProps = {
     currentUser: null
 }
 
-const mapStateToProps = ({ user }) => ({
-    currentUser: user.currentUser
-})
 
-export default connect(mapStateToProps, null)(Header);
+export default Header;

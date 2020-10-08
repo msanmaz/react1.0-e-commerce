@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
+import {useDispatch, useSelector} from 'react-redux';
+import {signUpUser,resetAllAuthForm} from './../../redux/User/user.actions'
 import './signup.css';
-import {auth, handleUserProfile} from './../../firebase/utils';
 import AuthWrapper from './../AuthWrapper';
 import FormInput from './../Forms/Formsinput';
 import Buttons from './../Forms/Buttons';
@@ -11,14 +12,34 @@ const eye = <FontAwesomeIcon icon={faEye} />;
 
 
 
-
+const mapState = ({user}) => ({
+    signUpSuccess:user.signUpSuccess,
+    signUpError:user.signUpError
+})
 const Signup = props => {
+    const{signUpSuccess,signUpError} = useSelector(mapState)
+    const dispatch = useDispatch();
     const[displayName, setdisplayName]= useState('');
     const[email, setemail]= useState('');
     const[password, setpassword]= useState('');
     const[confirmPassword, setconfirmPasword]= useState('');
     const[errors, seterrors]= useState([]);
 
+    useEffect(() =>{
+        if(signUpSuccess){
+            reset();
+            dispatch(resetAllAuthForm());
+            props.history.push('/');
+        }
+        
+    },[signUpSuccess])
+
+    useEffect(() =>{
+        if(Array.isArray(signUpError)&& signUpError.length > 0){
+            seterrors(signUpError)
+        }
+        
+    },[signUpError])
 
 
     const reset = () => {
@@ -39,25 +60,14 @@ const Signup = props => {
     
 
 
-   const handleFormSubmit = async event => {
+   const handleFormSubmit = event => {
         event.preventDefault();
-        if(password !== confirmPassword){
-            const err =['Password is not matching'];
-            seterrors(err)
-            return
-        }
-
-        try{
-          const { user }  = await auth.createUserWithEmailAndPassword(email,password);
-          await handleUserProfile(user , {displayName});
-            reset();
-            props.history.push('/')
-
-        }
-        catch(err){
-            console.log(err)
-            console.log(err.message)
-        }
+        dispatch(signUpUser({
+            displayName,
+            email,
+            password,
+            confirmPassword
+        }))
 
     }
 
