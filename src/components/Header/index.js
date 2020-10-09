@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import {useSelector} from 'react-redux'
+import {useSelector, useDispatch} from 'react-redux'
 import { Link } from 'react-router-dom';
-import { connect } from 'react-redux'
+import {signOutUserStart} from './../../redux/User/user.actions'
 import { Button } from './../Button';
-import { auth } from './../../firebase/utils';
 
 import './navbar.css';
 
@@ -14,11 +13,18 @@ const mapState = ({ user }) => ({
 
 
 const Header = props => {
+   
+    const dispatch = useDispatch()
     const [click, setClick] = useState(false);
     const handleClick = () => setClick(!click);
     const closeMobileMenu = () => setClick(false);
 
     const [button, setButton] = useState(true);
+
+
+    const signOut= () => {
+        dispatch(signOutUserStart())  
+    }
 
     const showButton = () => {
         if (window.innerWidth <= 960) {
@@ -53,7 +59,7 @@ const Header = props => {
                     </Link>
                         </li>
                         <li className='nav-item nav-links'>
-                            <span onClick={() => auth.signOut()}>LogOut</span>
+                            <span onClick={() => signOut()}>LogOut</span>
 
                         </li>
 
