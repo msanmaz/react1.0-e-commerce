@@ -48,7 +48,14 @@ export const signUpUserStart = userCredentials => ({
 
 
 export const signUpUser = ({ displayName, email, password, confirmPassword }) => async dispatch => {
-   
+   if(password !== confirmPassword){
+       const err = ['Password Don\'t match'];
+       dispatch({
+           type:userTypes.SIGN_UP_ERROR,
+           payload:err
+       });
+       return
+   }
 }
 
 

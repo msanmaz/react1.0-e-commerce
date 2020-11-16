@@ -4,19 +4,19 @@ import './signin.css';
 import Buttons from './../../components/Forms/Buttons';
 import AuthWrapper from './../AuthWrapper'
 import { Link, withRouter } from 'react-router-dom';
-import { emailSignInStart,signInWithGoogle,resetAllAuthForm} from './../../redux/User/user.actions'
+import { emailSignInStart,signInWithGoogle,resetAllAuthForm, signInSuccess} from './../../redux/User/user.actions'
 
 import FormInput from './../Forms/Formsinput';
 
 
 const mapState = ({ user }) => ({
-    currentUser: user.currentUser,
+    signInSuccess: user.currentUser,
 
 })
 
 
 const SignIn = props => {
-    const { currentUser } = useSelector(mapState);
+    const { signInSuccess } = useSelector(mapState);
     const dispatch = useDispatch();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -24,11 +24,11 @@ const SignIn = props => {
 
 
     useEffect(() => {
-        if (currentUser) {
+        if (signInSuccess) {
             resetForm();
             props.history.push('/')
         }
-    }, [currentUser])
+    }, [signInSuccess])
 
 
 

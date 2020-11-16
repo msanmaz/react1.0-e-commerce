@@ -1,6 +1,6 @@
 import React, { useState,useEffect } from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {signUpUserStart} from './../../redux/User/user.actions'
+import {signUpUser, signUpUserStart} from './../../redux/User/user.actions'
 import './signup.css';
 import AuthWrapper from './../AuthWrapper';
 import FormInput from './../Forms/Formsinput';
@@ -13,11 +13,11 @@ const eye = <FontAwesomeIcon icon={faEye} />;
 
 
 const mapState = ({user}) => ({
-    currentUser:user.currentUser,
-    userErr:user.userErr
+    signUpSuccess:user.signUpSuccess,
+    signUpError:user.signUpError
 })
 const Signup = props => {
-    const{currentUser,userErr} = useSelector(mapState)
+    const{signUpSuccess,signUpError} = useSelector(mapState)
     const dispatch = useDispatch();
     const[displayName, setdisplayName]= useState('');
     const[email, setemail]= useState('');
@@ -26,19 +26,19 @@ const Signup = props => {
     const[errors, seterrors]= useState([]);
  
     useEffect(() =>{
-        if(currentUser){
+        if(signUpSuccess){
             reset();
             props.history.push('/');
         }
         
-    },[currentUser])
+    },[signUpSuccess])
 
     useEffect(() =>{
-        if(Array.isArray(userErr)&& userErr.length > 0){
-            seterrors(userErr)
+        if(Array.isArray(signUpError)&& signUpError.length > 0){
+            seterrors(signUpError)
         }
         
-    },[userErr])
+    },[signUpError])
 
 
     const reset = () => {
@@ -61,7 +61,7 @@ const Signup = props => {
 
    const handleFormSubmit = event => {
         event.preventDefault();
-        dispatch(signUpUserStart({
+        dispatch(signUpUser({
             displayName,
             email,
             password,
